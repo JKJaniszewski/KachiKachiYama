@@ -27,21 +27,45 @@ public class racoonMovement : MonoBehaviour
     void Update()
     {
         transform.Translate(Vector3.right*Time.deltaTime * RacoonSpeed);
-        
+        CheckForRacoonRotation();
     }
 
     IEnumerator RandomlyRotate(){
         waitTime = Random.Range(RandomRotationLowerLimit,RandomRotationUpperLimit);
-        Debug.Log(waitTime);
-        yield return new WaitForSeconds(waitTime);
-        RacoonSprite.flipX = true;
+        yield return new WaitForSeconds(waitTime);  
+        RacoonChecking = true;
+        yield return new WaitForSeconds(Random.Range(1,2));
+        RacoonChecking = false;
+        RacoonSpeed = tempRacoonSpeed;
+        StartCoroutine(RandomlyRotate());
+    }
+
+
+
+    void CheckForRacoonRotation(){
+        if(RacoonChecking){
+                RacoonSprite.flipX = true;
+            }
+            else{
+                RacoonSprite.flipX = false;
+            }
+    }
+
+    void OnCollisionEnter(Collision collision){
+        if(collision.gameObject.tag == "player" && RacoonChecking == false){
+            StopAllCoroutines();
+            StartCoroutine(LookingBackCausedByCollision());
+        }
+    }
+
+    IEnumerator LookingBackCausedByCollision(){
         RacoonChecking = true;
         tempRacoonSpeed = RacoonSpeed;
         RacoonSpeed = 0;
         yield return new WaitForSeconds(Random.Range(1,2));
-        RacoonSpeed = tempRacoonSpeed;
-        RacoonSprite.flipX = false;
-        RacoonChecking = false;
         StartCoroutine(RandomlyRotate());
+        RacoonSpeed = tempRacoonSpeed;
+        RacoonChecking = false;
     }
+
 }
