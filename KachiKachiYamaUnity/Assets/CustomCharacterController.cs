@@ -83,7 +83,7 @@ public class CustomCharacterController : MonoBehaviour
             StartCoroutine(WaitForRestart());
         }
     }
-
+    
     IEnumerator StrikingSparkSpriteWait(){
         CharacterSprite.sprite = StrikingSparkSprite;
         StrikingSpark = true;
