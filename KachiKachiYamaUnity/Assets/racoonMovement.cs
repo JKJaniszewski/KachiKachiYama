@@ -10,7 +10,7 @@ public class racoonMovement : MonoBehaviour
     public float RandomRotationUpperLimit = 10f;
 
     public static bool RacoonChecking = false;
-    float tempRacoonSpeed;
+    public float tempRacoonSpeed;
 
     float waitTime;
 
@@ -33,14 +33,14 @@ public class racoonMovement : MonoBehaviour
     IEnumerator RandomlyRotate(){
         waitTime = Random.Range(RandomRotationLowerLimit,RandomRotationUpperLimit);
         yield return new WaitForSeconds(waitTime);  
+        tempRacoonSpeed = RacoonSpeed;
+        RacoonSpeed = 0;
         RacoonChecking = true;
         yield return new WaitForSeconds(Random.Range(1,2));
         RacoonChecking = false;
         RacoonSpeed = tempRacoonSpeed;
         StartCoroutine(RandomlyRotate());
     }
-
-
 
     void CheckForRacoonRotation(){
         if(RacoonChecking){
@@ -53,7 +53,8 @@ public class racoonMovement : MonoBehaviour
 
     void OnCollisionEnter(Collision collision){
         if(collision.gameObject.tag == "player" && RacoonChecking == false){
-            StopAllCoroutines();
+            Debug.Log("Collided with Racoon");
+            StopCoroutine(RandomlyRotate());
             StartCoroutine(LookingBackCausedByCollision());
         }
     }
@@ -64,8 +65,9 @@ public class racoonMovement : MonoBehaviour
         RacoonSpeed = 0;
         yield return new WaitForSeconds(Random.Range(1,2));
         StartCoroutine(RandomlyRotate());
-        RacoonSpeed = tempRacoonSpeed;
         RacoonChecking = false;
+        RacoonSpeed = tempRacoonSpeed;
+        
     }
 
 }
