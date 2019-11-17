@@ -4,21 +4,18 @@ using UnityEngine;
 
 public class racoonMovement : MonoBehaviour
 {
-
     public float RacoonSpeed;
     public float RandomRotationLowerLimit = 2f;
     public float RandomRotationUpperLimit = 10f;
-
     public static bool RacoonChecking = false;
     public float tempRacoonSpeed;
-
     float waitTime;
-
     public SpriteRenderer RacoonSprite;
-    
-    // Start is called before the first frame update
+
+    public Rigidbody2D RacoonRB;
     void Start()
     {
+        RacoonRB = GetComponent<Rigidbody2D>();
         RacoonSprite = GetComponent<SpriteRenderer>();
         StartCoroutine(RandomlyRotate());
     }
@@ -26,8 +23,11 @@ public class racoonMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.right*Time.deltaTime * RacoonSpeed);
         CheckForRacoonRotation();
+    }
+
+    void FixedUpdate(){
+        RacoonRB.velocity = new Vector2 (RacoonSpeed, 0);
     }
 
     IEnumerator RandomlyRotate(){
@@ -46,14 +46,14 @@ public class racoonMovement : MonoBehaviour
         if(RacoonChecking){
                 RacoonSprite.flipX = true;
             }
-            else{
-                RacoonSprite.flipX = false;
-            }
+        else{
+            RacoonSprite.flipX = false;
+        }
     }
 
-    void OnCollisionEnter(Collision collision){
-        if(collision.gameObject.tag == "player" && RacoonChecking == false){
-            //Debug.Log("Collided with Racoon");
+    void OnCollisionEnter2D(Collision2D collision){
+        if(collision.gameObject.tag == "Player" && RacoonChecking == false){
+            Debug.Log("Collided with Racoon");
             StopCoroutine(RandomlyRotate());
             StartCoroutine(LookingBackCausedByCollision());
         }
@@ -67,7 +67,5 @@ public class racoonMovement : MonoBehaviour
         StartCoroutine(RandomlyRotate());
         RacoonChecking = false;
         RacoonSpeed = tempRacoonSpeed;
-        
     }
-
 }

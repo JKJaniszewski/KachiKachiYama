@@ -1992,6 +1992,7 @@ GameObject:
   - component: {fileID: 1168336375}
   - component: {fileID: 1168336374}
   - component: {fileID: 1168336377}
+  - component: {fileID: 1168336378}
   m_Layer: 0
   m_Name: Racoon
   m_TagString: Untagged
@@ -2016,6 +2017,7 @@ MonoBehaviour:
   RandomRotationUpperLimit: 6
   tempRacoonSpeed: 0
   RacoonSprite: {fileID: 1168336375}
+  RacoonRB: {fileID: 1168336378}
 --- !u!212 &1168336375
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2106,6 +2108,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 6.2883997, y: 10.24}
   m_EdgeRadius: 0
+--- !u!50 &1168336378
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168336373}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 6
 --- !u!1 &1172871469
 GameObject:
   m_ObjectHideFlags: 0
@@ -3021,6 +3044,7 @@ GameObject:
   - component: {fileID: 2034268293}
   - component: {fileID: 2034268295}
   - component: {fileID: 2034268296}
+  - component: {fileID: 2034268297}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -3103,12 +3127,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f84aac833edfd944980db952f36b7fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MovementSmoothing: 0.3
   FlintStoneOutSprite: {fileID: 21300000, guid: c620ae5e686545a4c9b3e5b576d432eb,
     type: 3}
   StrikingSparkSprite: {fileID: 21300000, guid: a5d29bc7512d2044aa46c49d9e84e5dc,
     type: 3}
   CharacterWalking: {fileID: 21300000, guid: 23f61ca399011064ea71c8245af2b005, type: 3}
-  CharacterSpeed: 2
+  CharacterSpeed: 40
   SparkStrikingTime: 0.2
   CharacterSprite: {fileID: 2034268293}
   StrikeCounter: 0
@@ -3119,6 +3144,7 @@ MonoBehaviour:
   BustedUI: {fileID: 221695505}
   YouWonUI: {fileID: 243298898}
   RacoonPosition: {fileID: 1168336376}
+  MainCharacterRB: {fileID: 0}
   distanceFromRacoon: 0
 --- !u!61 &2034268296
 BoxCollider2D:
@@ -3146,6 +3172,27 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4.679822, y: 9.393496}
   m_EdgeRadius: 0
+--- !u!50 &2034268297
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2034268292}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 6
 --- !u!1 &2083371129
 GameObject:
   m_ObjectHideFlags: 0
