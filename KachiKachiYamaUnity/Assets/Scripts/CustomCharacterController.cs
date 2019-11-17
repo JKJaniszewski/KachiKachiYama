@@ -8,14 +8,14 @@ public class CustomCharacterController : MonoBehaviour
 {
 
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;	// How much to smooth out the movement
-	private bool m_FacingRight = true;  // For determining which way the player is currently facing.
 	private Vector3 m_Velocity = Vector3.zero;
     public Sprite FlintStoneOutSprite;
     public Sprite StrikingSparkSprite;
-    public Sprite CharacterWalking;
+    public Sprite  CharacterWalkingArray;
+    public float CharacterSpriteAnimationSpeed;
     public float CharacterSpeed = 0.5f;
     public float SparkStrikingTime = 0.2f;
-    public SpriteRenderer CharacterSprite;
+    public SpriteRenderer CharacterSpriteRenderer;
     public int StrikeCounter = 0;
     public bool FlintStoneOut = false;
     public bool StrikingSpark = false;
@@ -27,13 +27,13 @@ public class CustomCharacterController : MonoBehaviour
     public GameObject YouWonUI;
     public Transform RacoonPosition;
     float horizontalMove = 0f;
-
     public Rigidbody2D MainCharacterRB;
+    public float GetAPointDistance = 1.5f;
 
     public float distanceFromRacoon;
     void Start()
     {
-        CharacterSprite = GetComponent<SpriteRenderer>();
+        CharacterSpriteRenderer = GetComponent<SpriteRenderer>();
         MainCharacterRB = GetComponent<Rigidbody2D>();
         
     }
@@ -41,8 +41,19 @@ public class CustomCharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalMove = Input.GetAxisRaw("Horizontal") * CharacterSpeed;
         RacoonCheckingReference = racoonMovement.RacoonChecking;
+
+
+        if(Input.GetAxisRaw("Horizontal") <0){
+            horizontalMove = Input.GetAxisRaw("Horizontal") * CharacterSpeed;
+        }
+        if(Input.GetAxisRaw("Horizontal") >0){
+            horizontalMove = Input.GetAxisRaw("Horizontal") * CharacterSpeed*2;
+        }
+        else if (Input.GetAxisRaw("Horizontal") == 0 || distanceFromRacoon > 12.5f){
+            horizontalMove = CharacterSpeed;
+        }
+
 
         distanceFromRacoon = Mathf.Abs(RacoonPosition.transform.position.x - transform.position.x);
 
@@ -53,16 +64,14 @@ public class CustomCharacterController : MonoBehaviour
         
         if (Input.GetMouseButtonUp(1)){
 
-            Debug.Log("F was pressed");
-
             if(FlintStoneOut == false){
                 FlintStoneOut = true;
                 Debug.Log("Flint Stone Out");
-                CharacterSprite.sprite = FlintStoneOutSprite;
+                CharacterSpriteRenderer.sprite = FlintStoneOutSprite;
             }
-            else{
+            else {
             FlintStoneOut = false;
-            CharacterSprite.sprite = CharacterWalking;
+            CharacterSpriteRenderer.sprite = CharacterWalkingArray;
             }
         }
 
@@ -81,16 +90,23 @@ public class CustomCharacterController : MonoBehaviour
 
     void FixedUpdate(){
         Move(horizontalMove * Time.fixedDeltaTime);
+
+        if(MainCharacterRB.velocity.x < 0 && Input.GetAxisRaw("Horizontal") < 0){
+            MainCharacterRB.velocity = new Vector2(0,0);
+        }
+        if(distanceFromRacoon<2f && RacoonCheckingReference){
+            MainCharacterRB.velocity = new Vector2(0,0);
+        }
     }
     
     IEnumerator StrikingSparkSpriteWait(){
-        CharacterSprite.sprite = StrikingSparkSprite;
+        CharacterSpriteRenderer.sprite = StrikingSparkSprite;
         StrikingSpark = true;
         yield return new WaitForSeconds(SparkStrikingTime);
         StrikingSpark = false;
         FlintStoneOut = false;
-        CharacterSprite.sprite = CharacterWalking;
-        if(!busted && distanceFromRacoon<1.5){
+        CharacterSpriteRenderer.sprite = CharacterWalkingArray;
+        if(!busted && distanceFromRacoon<GetAPointDistance){
             StrikeCounter++;
             SuccessfulStrikesCounter.text = StrikeCounter.ToString() +"/5";
         }
@@ -107,27 +123,5 @@ public class CustomCharacterController : MonoBehaviour
 			// And then smoothing it out and applying it to the character
 			MainCharacterRB.velocity = Vector3.SmoothDamp(MainCharacterRB.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
 
-			// If the input is moving the player right and the player is facing left...
-			if (move > 0 && !m_FacingRight)
-			{
-				// ... flip the player.
-				Flip();
-			}
-			else if (move < 0 && m_FacingRight)
-			{
-				// ... flip the player.
-				Flip();
-			}
-	}
-
-	private void Flip()
-	{
-		// Switch the way the player is labelled as facing.
-		m_FacingRight = !m_FacingRight;
-
-		// Multiply the player's x local scale by -1.
-		Vector3 theScale = transform.localScale;
-		theScale.x *= -1;
-		transform.localScale = theScale;
 	}
 }
