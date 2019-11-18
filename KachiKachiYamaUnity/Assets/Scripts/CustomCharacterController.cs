@@ -28,7 +28,7 @@ public class CustomCharacterController : MonoBehaviour
     public Transform RacoonPosition;
     float horizontalMove = 0f;
     public Rigidbody2D MainCharacterRB;
-    public float GetAPointDistance = 1.5f;
+    public float GetAPointDistance = 2f;
 
     public float distanceFromRacoon;
     void Start()
@@ -50,10 +50,14 @@ public class CustomCharacterController : MonoBehaviour
         if(Input.GetAxisRaw("Horizontal") >0){
             horizontalMove = Input.GetAxisRaw("Horizontal") * CharacterSpeed*2;
         }
-        else if (Input.GetAxisRaw("Horizontal") == 0 || distanceFromRacoon > 12.5f){
+        if(distanceFromRacoon<6.5f && Input.GetAxisRaw("Horizontal") == 0){
+            horizontalMove = 0;
+        }
+        else if (distanceFromRacoon > 6.5f){
             horizontalMove = CharacterSpeed;
         }
 
+        Debug.Log(distanceFromRacoon);
 
         distanceFromRacoon = Mathf.Abs(RacoonPosition.transform.position.x - transform.position.x);
 

@@ -42,7 +42,6 @@ public class racoonMovement : MonoBehaviour
     }
 
     IEnumerator RandomlyRotate(){
-        Debug.Log("CoroutineStarted");
         waitTime = Random.Range(RandomRotationLowerLimit,RandomRotationUpperLimit);
         yield return new WaitForSeconds(waitTime);  
         tempRacoonSpeed = RacoonSpeed;
@@ -75,9 +74,9 @@ public class racoonMovement : MonoBehaviour
         waitFornextCollision = true;
         Debug.Log("Collided with Racoon");
         tempRacoonSpeed = RacoonSpeed;
+        RacoonSpeed = 0;
         yield return new WaitForSeconds(Random.Range(.1f,.5f));
         RacoonChecking = true;
-        RacoonSpeed = 0;
         yield return new WaitForSeconds(Random.Range(1,2));
         RacoonChecking = false;
         RacoonSpeed = 10f;
