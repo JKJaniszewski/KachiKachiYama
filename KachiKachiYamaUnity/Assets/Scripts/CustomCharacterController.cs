@@ -53,7 +53,7 @@ public class CustomCharacterController : MonoBehaviour
         if(distanceFromRacoon<6.5f && Input.GetAxisRaw("Horizontal") == 0){
             horizontalMove = 0;
         }
-        else if (distanceFromRacoon > 6.5f){
+        else if (distanceFromRacoon > 40f){
             horizontalMove = CharacterSpeed;
         }
 
