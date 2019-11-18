@@ -57,7 +57,7 @@ public class CustomCharacterController : MonoBehaviour
             horizontalMove = CharacterSpeed;
         }
 
-        Debug.Log(distanceFromRacoon);
+        //Debug.Log(distanceFromRacoon);
 
         distanceFromRacoon = Mathf.Abs(RacoonPosition.transform.position.x - transform.position.x);
 

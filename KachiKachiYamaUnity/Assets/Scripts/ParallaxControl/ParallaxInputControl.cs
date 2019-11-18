@@ -22,7 +22,7 @@ public class ParallaxInputControl : MonoBehaviour
 		{
 			//parallaxCtrl.Speed = Input.GetAxisRaw("Horizontal") * runSpeed * -1;
             parallaxCtrl.Speed =  mainCamera.velocity.magnitude * -1.0f;
-            Debug.Log(mainCamera.velocity.magnitude);
+            //Debug.Log(mainCamera.velocity.magnitude);
 		}
     }
 }
